@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {User} from "../lib/types.ts";
-import UserCard from "../components/UserCard.vue";
+import UsersWrapper from "../components/UsersWrapper.vue";
 
 const userData: User = {
   "id": 1,
@@ -25,19 +25,11 @@ const userData: User = {
     "bs": "harness real-time e-markets"
   }
 }
+
+const usersData = new Array(10).fill(userData).map((user, index) => ({...user, id: index, name: user.name + " " + index}));
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-4">
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-  </div>
+  <h1 class="text-3xl font-semibold mb-6">Users</h1>
+  <UsersWrapper :users="usersData" :per-page="4" />
 </template>
