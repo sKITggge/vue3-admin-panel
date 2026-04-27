@@ -57,6 +57,7 @@ watch([currentPage, searchTerm], () => {
       v-else
       :users="usersData"
       :perPage="+LIMIT"
+      :currentPage="currentPage"
       :totalUsers="totalUsers"
       @onPageChange="onPageChange"
   />
