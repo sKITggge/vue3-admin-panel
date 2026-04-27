@@ -1,43 +1,43 @@
 <script setup lang="ts">
+import ProgressSpinner from 'primevue/progressspinner';
+import UsersWrapper from "../components/UsersWrapper.vue";
+import {getUsers, LIMIT} from "../lib/api.ts";
+import {ref, watchEffect} from "vue";
 import type {User} from "../lib/types.ts";
-import UserCard from "../components/UserCard.vue";
 
-const userData: User = {
-  "id": 1,
-  "name": "Leanne Graham",
-  "username": "Bret",
-  "email": "Sincere@april.biz",
-  "address": {
-    "street": "Kulas Light",
-    "suite": "Apt. 556",
-    "city": "Gwenborough",
-    "zipcode": "92998-3874",
-    "geo": {
-      "lat": "-37.3159",
-      "lng": "81.1496"
-    }
-  },
-  "phone": "1-770-736-8031 x56442",
-  "website": "hildegard.org",
-  "company": {
-    "name": "Romaguera-Crona",
-    "catchPhrase": "Multi-layered client-server neural-net",
-    "bs": "harness real-time e-markets"
-  }
+const currentPage = ref<number>(1);
+const totalPages = ref<number>(1);
+const loading = ref<boolean>(false);
+const usersData = ref<User[]>([]);
+
+const loadUsers = async (page: number) => {
+  loading.value = true;
+
+  const resp = await getUsers(page)
+  usersData.value = resp.data
+  totalPages.value = resp.total
+
+  loading.value = false;
 }
+
+const onPageChange = async (page: number) => {
+  currentPage.value = page;
+}
+
+watchEffect(async () => {
+  await loadUsers(currentPage.value)
+})
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-4">
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
+  <h1 class="text-3xl font-semibold mb-6">Users</h1>
+  <div v-if="loading" class="mx-auto flex justify-center items-center">
+    <ProgressSpinner style="width: 50px; height: 50px" />
   </div>
+  <UsersWrapper
+      :users="usersData"
+      :perPage="LIMIT"
+      :totalPages="totalPages"
+      @onPageChange="onPageChange"
+  />
 </template>
