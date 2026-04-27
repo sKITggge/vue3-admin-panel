@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import 'primeicons/primeicons.css';
+
 *,
 *::before,
 *::after {
@@ -11,8 +13,6 @@ body {
 
     line-height: 1.5;
     font-family: system-ui, sans-serif;
-    background-color: #fff;
-    color: #111;
 }
 
 a {
