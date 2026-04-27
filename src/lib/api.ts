@@ -13,7 +13,7 @@ export async function getUsers(page: number = 1, search: string = ""): Promise<P
     const res = await fetch(`${BASE_URL}?${params.toString()}`);
 
     if (!res.ok) {
-        return { data: [], total: 0 };
+        throw new Error("Unable to get users");
     }
 
     const data: User[] = await res.json();

@@ -9,7 +9,7 @@ const { user } = defineProps<{ user: User }>();
 </script>
 
 <template>
-  <router-link :to="{ name: 'users', params: { id: user.id } }">
+  <router-link :to="{ name: 'user', params: { id: user.id } }">
     <Card class="overflow-hidden rounded-xl group">
       <template #header>
         <div class="h-2 bg-gradient-to-r from-blue-600 to-purple-600 transition-opacity duration-200 group-hover:opacity-70"></div>
@@ -18,7 +18,7 @@ const { user } = defineProps<{ user: User }>();
       <template #title>
         <div class="flex items-center gap-3">
           <Avatar
-              :label="user.name.charAt(0).toUpperCase()"
+              :label="user.name?.[0]?.toUpperCase() ?? ''"
               shape="circle"
               size="large"
               class="w-12 h-12 bg-blue-500 text-white font-bold shadow-sm"
