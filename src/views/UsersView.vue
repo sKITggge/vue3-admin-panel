@@ -4,12 +4,12 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import UsersWrapper from "../components/UsersWrapper.vue";
 import {getUsers, LIMIT} from "../lib/api.ts";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import debounce from 'lodash/debounce';
 import type {User} from "../lib/types.ts";
 
 const currentPage = ref<number>(1);
-const totalUsers = ref<number>(1);
+const totalUsers = ref<number>(0);
 const searchTerm = ref<string>("");
 const loading = ref<boolean>(false);
 const errorMessage = ref<string>("");
@@ -17,6 +17,7 @@ const usersData = ref<User[]>([]);
 
 const loadUsers = async (page: number, search: string) => {
   try {
+    errorMessage.value = "";
     loading.value = true;
 
     const { data , total } = await getUsers(page, search)
@@ -40,12 +41,11 @@ const debouncedSearch = debounce((search: string) => {
 
 const onPageChange = (page: number) => {
   currentPage.value = page;
+  loadUsers(currentPage.value, searchTerm.value);
 }
 
-watch(currentPage, () => {
+onMounted(() => {
   loadUsers(currentPage.value, searchTerm.value);
-}, {
-  immediate: true,
 });
 
 watch(searchTerm, () => {
