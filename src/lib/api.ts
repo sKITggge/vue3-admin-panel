@@ -1,7 +1,7 @@
-import type {PaginatedUsers, User} from "./types.ts";
+import type {PaginatedUsers, Post, User} from "./types.ts";
 
 export const LIMIT = "4";
-const BASE_URL = "https://jsonplaceholder.typicode.com/users";
+const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 export async function getUsers(page: number = 1): Promise<PaginatedUsers> {
     const params = new URLSearchParams({
@@ -9,7 +9,7 @@ export async function getUsers(page: number = 1): Promise<PaginatedUsers> {
         _limit: LIMIT,
     });
 
-    const res = await fetch(`${BASE_URL}?${params.toString()}`);
+    const res = await fetch(`${BASE_URL}/users?${params.toString()}`);
 
     if (!res.ok) {
         throw new Error("Unable to get users");
@@ -20,4 +20,24 @@ export async function getUsers(page: number = 1): Promise<PaginatedUsers> {
     const total = totalCount ? parseInt(totalCount, 10) : 0;
 
     return { data, total };
+}
+
+export async function getUser(id: number): Promise<User> {
+    const res = await fetch(`${BASE_URL}/users/${id}`);
+
+    if (!res.ok) {
+        throw Error("Unable to get user");
+    }
+
+    return await res.json();
+}
+
+export async function getUserPosts(id: number): Promise<Post[]> {
+    const res = await fetch(`${BASE_URL}/posts?userId=${id}`);
+
+    if (!res.ok) {
+        return []
+    }
+
+    return await res.json();
 }
