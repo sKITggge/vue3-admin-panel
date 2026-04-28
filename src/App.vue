@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Menubar from 'primevue/menubar';
+import type {MenuItem} from "primevue/menuitem";
 
-const links = [
-  {label: "Users", route: "/"},
-  {label: "Posts", route: "/posts"},
+const links: MenuItem[] = [
+  {label: "Users", route: "users"},
+  {label: "Posts", route: "posts"},
 ]
 </script>
 
@@ -14,11 +15,8 @@ const links = [
         <span class=" text-2xl font-bold mr-4">Admin Panel</span>
       </template>
       <template #item="{ item, props }">
-        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-          <a :href="href" v-bind="props.action" @click="navigate">
-            <span :class="item.icon" />
-            <span>{{ item.label }}</span>
-          </a>
+        <router-link v-if="item.route" :to="{ name: item.route }" v-bind="props.action">
+          {{ item.label }}
         </router-link>
       </template>
     </Menubar>
