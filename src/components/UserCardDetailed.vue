@@ -9,10 +9,12 @@ import {computed} from "vue";
 const {user} = defineProps<{ user: User }>();
 
 const formattedLocation = computed(() => {
-  return user.address.street + ", "
-      + user.address.suite + ", "
-      + user.address.city + ", "
-      + user.address.zipcode;
+  return [
+    user.address.street,
+    user.address.suite,
+    user.address.city,
+    user.address.zipcode
+  ].filter(Boolean).join(", ");
 })
 </script>
 

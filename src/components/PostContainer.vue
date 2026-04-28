@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Panel from "primevue/panel";
+import Message from 'primevue/message';
 import {onMounted, ref} from "vue";
 import type {Post} from "../lib/types.ts";
 import PostItem from "./PostItem.vue";
@@ -9,18 +10,25 @@ const { userId } = defineProps<{ userId: number }>();
 
 const posts = ref<Post[]>([]);
 const loading = ref<boolean>(false);
+const errorMessage = ref<string | null>(null);
 
 onMounted(async () => {
   loading.value = true;
-  posts.value = await getUserPosts(userId)
-  loading.value = false;
+  try {
+    posts.value = await getUserPosts(userId)
+  } catch (error: any) {
+    errorMessage.value = error.message;
+  } finally {
+    loading.value = false;
+  }
 })
 </script>
 
 <template>
   <Panel>
-    <h2 class="mb-4">User`s posts ({{ posts.length }})</h2>
-    <div class="flex flex-col gap-2">
+    <h2 class="mb-4">User`s posts <span v-if="!!posts.length">({{ posts.length }})</span></h2>
+    <Message v-if="!!errorMessage">{{ errorMessage }}</Message>
+    <div v-else class="flex flex-col gap-2">
       <PostItem
           v-for="post in posts"
           :post="post"

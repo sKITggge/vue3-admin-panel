@@ -13,20 +13,20 @@ const user = ref<User | null>(null);
 const loading = ref<boolean>(false);
 const errorMessage = ref<string | null>(null);
 
-async function loadUser(id: number): Promise<User> {
+onMounted(async () => {
+  const userId = +route.params.id;
+  if (isNaN(userId)) {
+    errorMessage.value = "Invalid user ID";
+    return;
+  }
+
   loading.value = true;
   try {
-    return await getUser(id);
-  } finally {
-    loading.value = false;
-  }
-}
-
-onMounted(async () => {
-  try {
-    user.value = await loadUser(+route.params.id);
+    user.value = await getUser(userId);
   } catch (error: any) {
     errorMessage.value = error.message;
+  } finally {
+    loading.value = false;
   }
 })
 </script>
@@ -48,6 +48,6 @@ onMounted(async () => {
       <UserCardDetailed v-else :user="user"/>
     </div>
 
-    <PostContainer v-if="!!user" :user-id="user?.id"/>
+    <PostContainer v-if="!!user" :user-id="user.id"/>
   </div>
 </template>
