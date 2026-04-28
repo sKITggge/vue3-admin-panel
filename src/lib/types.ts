@@ -27,3 +27,15 @@ export interface Company {
     catchPhrase: string;
     bs:          string;
 }
+
+export interface PaginatedUsers {
+    data: User[];
+    total: number
+}
+
+export interface Post {
+    userId: number;
+    id:     number;
+    title:  string;
+    body:   string;
+}

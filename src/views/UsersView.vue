@@ -1,43 +1,55 @@
 <script setup lang="ts">
+import ProgressSpinner from 'primevue/progressspinner';
+import Message from 'primevue/message';
+import UsersWrapper from "../components/UsersWrapper.vue";
+import {getUsers, LIMIT} from "../lib/api.ts";
+import {ref, watch} from "vue";
 import type {User} from "../lib/types.ts";
-import UserCard from "../components/UserCard.vue";
 
-const userData: User = {
-  "id": 1,
-  "name": "Leanne Graham",
-  "username": "Bret",
-  "email": "Sincere@april.biz",
-  "address": {
-    "street": "Kulas Light",
-    "suite": "Apt. 556",
-    "city": "Gwenborough",
-    "zipcode": "92998-3874",
-    "geo": {
-      "lat": "-37.3159",
-      "lng": "81.1496"
-    }
-  },
-  "phone": "1-770-736-8031 x56442",
-  "website": "hildegard.org",
-  "company": {
-    "name": "Romaguera-Crona",
-    "catchPhrase": "Multi-layered client-server neural-net",
-    "bs": "harness real-time e-markets"
+const currentPage = ref<number>(1);
+const totalUsers = ref<number>(1);
+const loading = ref<boolean>(false);
+const errorMessage = ref<string>("");
+const usersData = ref<User[] | null>(null);
+
+const loadUsers = async (page: number) => {
+  try {
+    loading.value = true;
+
+    const { data , total } = await getUsers(page)
+    usersData.value = data
+    totalUsers.value = total
+  } catch (error: any) {
+    errorMessage.value = error.message;
+  } finally {
+    loading.value = false;
   }
 }
+
+const onPageChange = async (page: number) => {
+  currentPage.value = page;
+}
+
+watch([currentPage], () => {
+  loadUsers(currentPage.value)
+}, {
+  immediate: true,
+})
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-4">
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
-    <UserCard :user="userData"/>
+  <h1 class="text-3xl font-semibold mb-6">Users</h1>
+  <div v-if="loading" class="mx-auto flex justify-center items-center">
+    <ProgressSpinner style="width: 50px; height: 50px" />
   </div>
+  <Message v-else-if="!!errorMessage || !usersData" severity="error">
+    {{ errorMessage ?? "Please try again later" }}
+  </Message>
+  <UsersWrapper
+      v-else
+      :users="usersData"
+      :perPage="+LIMIT"
+      :totalUsers="totalUsers"
+      @onPageChange="onPageChange"
+  />
 </template>

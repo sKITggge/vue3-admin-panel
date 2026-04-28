@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory, type RouteRecordInfo} from 'vue-router'
 import UsersView from '../views/UsersView.vue'
+import UserView from '../views/UserView.vue'
 
 export interface RouteNamedMap {
     users: RouteRecordInfo<
@@ -35,7 +36,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: '/', name: 'users', component: UsersView },
-        { path: '/users/:id', name: 'user', component: UsersView},
+        { path: '/users/:id', name: 'user', component: UserView},
         { path: '/posts', name: 'posts', component: UsersView},
     ],
 })
