@@ -16,8 +16,12 @@ onMounted(async () => {
   loading.value = true;
   try {
     posts.value = await getUserPosts(userId)
-  } catch (error: any) {
-    errorMessage.value = error.message;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      errorMessage.value = error.message;
+    } else {
+      errorMessage.value = 'An unknown error occurred';
+    }
   } finally {
     loading.value = false;
   }

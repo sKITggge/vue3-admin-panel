@@ -3,10 +3,11 @@ import type {PaginatedUsers, Post, User} from "./types.ts";
 export const LIMIT = "4";
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
-export async function getUsers(page: number = 1): Promise<PaginatedUsers> {
+export async function getUsers(page: number = 1, search: string = ""): Promise<PaginatedUsers> {
     const params = new URLSearchParams({
         _page: String(page),
         _limit: LIMIT,
+        q: search,
     });
 
     const res = await fetch(`${BASE_URL}/users?${params.toString()}`);
