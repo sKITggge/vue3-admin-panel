@@ -21,8 +21,12 @@ const loadUsers = async (page: number, search: string) => {
     const { data , total } = await getUsers(page, search)
     usersData.value = data
     totalUsers.value = total
-  } catch (error: any) {
-    errorMessage.value = error.message;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      errorMessage.value = error.message;
+    } else {
+      errorMessage.value = 'An unknown error occurred';
+    }
   } finally {
     loading.value = false;
   }

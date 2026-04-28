@@ -10,7 +10,7 @@ interface UsersWrapperProps {
   totalUsers: number;
 }
 
-const { users, perPage, totalUsers} = defineProps<UsersWrapperProps>()
+const { users, perPage, currentPage, totalUsers} = defineProps<UsersWrapperProps>()
 const emit = defineEmits<{ onPageChange: [page: number]}>()
 
 const handlePageChange = (event: PageState) => {
