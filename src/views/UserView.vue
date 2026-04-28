@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import {type RouteParams, useRoute} from "vue-router";
 import type {User} from "../lib/types.ts";
 import {onMounted, ref} from "vue";
 import {getUser} from "../lib/api.ts";
@@ -14,7 +14,8 @@ const loading = ref<boolean>(false);
 const errorMessage = ref<string | null>(null);
 
 onMounted(async () => {
-  const userId = +route.params.id;
+  const params = route.params as RouteParams<'user'>;
+  const userId = +params.id;
   if (isNaN(userId)) {
     errorMessage.value = "Invalid user ID";
     return;
@@ -23,8 +24,12 @@ onMounted(async () => {
   loading.value = true;
   try {
     user.value = await getUser(userId);
-  } catch (error: any) {
-    errorMessage.value = error.message;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      errorMessage.value = error.message;
+    } else {
+      errorMessage.value = 'An unknown error occurred';
+    }
   } finally {
     loading.value = false;
   }
