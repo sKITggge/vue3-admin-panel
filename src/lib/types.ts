@@ -39,3 +39,12 @@ export interface Post {
     title:  string;
     body:   string;
 }
+
+export interface DetailedPost extends Post {
+    user:   User;
+}
+
+export interface PaginatedPosts {
+    data: DetailedPost[];
+    total: number
+}
