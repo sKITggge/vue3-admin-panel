@@ -7,7 +7,7 @@ import {ref} from "vue";
 import {TOAST_MESSAGES} from "../lib/constants.ts";
 
 const {post} = defineProps<{ post: DetailedPost }>()
-const emit = defineEmits<{ onToast: [obj: ToastPayload] }>()
+const emit = defineEmits<{ onDeletePost: [obj: ToastPayload] }>()
 
 const isDeleting = ref<boolean>(false);
 
@@ -15,20 +15,20 @@ const onDelete = async () => {
   try {
     isDeleting.value = true;
     await deletePost(post.id)
-    emit("onToast", {
+    emit("onDeletePost", {
       success: true,
       postId: post.id,
       message: TOAST_MESSAGES.DELETE_SUCCESS
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      emit("onToast", {
+      emit("onDeletePost", {
         success: false,
         postId: post.id,
         message: TOAST_MESSAGES.DELETE_ERROR(error.message)
       });
     } else {
-      emit("onToast", {
+      emit("onDeletePost", {
         success: false,
         postId: post.id,
         message: TOAST_MESSAGES.DELETE_ERROR("Unknown error")

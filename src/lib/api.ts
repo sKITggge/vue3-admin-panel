@@ -1,6 +1,6 @@
 import type {PaginatedPosts, PaginatedUsers, Post, User} from "./types.ts";
 
-export const LIMIT = 4;
+export const LIMIT = 6;
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 export async function getUsers(page: number = 1, search: string = ""): Promise<PaginatedUsers> {

@@ -44,6 +44,10 @@ const onPageChange = (page: number) => {
   loadPosts(currentPage.value, searchTerm.value);
 }
 
+const handleDeletePost = (id: number) => {
+  postsData.value = postsData.value.filter(p => p.id !== id);
+}
+
 onMounted(() => {
   loadPosts(currentPage.value, searchTerm.value);
 });
@@ -73,5 +77,6 @@ watch(searchTerm, () => {
       :currentPage="currentPage"
       :totalPosts="totalPosts"
       @onPageChange="onPageChange"
+      @handleDeletePost="handleDeletePost"
   />
 </template>

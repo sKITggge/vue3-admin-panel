@@ -4,7 +4,6 @@ import type {DetailedPost, ToastPayload} from "../lib/types.ts";
 import PostItemDetailed from "./PostItemDetailed.vue";
 import Toast from "primevue/toast";
 import {useToast} from "primevue";
-import {ref} from "vue";
 
 interface UsersWrapperProps {
   posts: DetailedPost[];
@@ -14,19 +13,18 @@ interface UsersWrapperProps {
 }
 
 const {posts, perPage, currentPage, totalPosts} = defineProps<UsersWrapperProps>()
-const emit = defineEmits<{ onPageChange: [page: number] }>()
+const emit = defineEmits<{ onPageChange: [page: number], handleDeletePost: [id: number]}>()
 
-const deletedPosts = ref<number[]>([]);
 const toast = useToast();
 
 const handlePageChange = (event: PageState) => {
   emit("onPageChange", event.page + 1);
 }
 
-const onToast = (obj: ToastPayload) => {
+const onDeletePost = (obj: ToastPayload) => {
   toast.add(obj.message);
   if (obj.success) {
-    deletedPosts.value.push(obj.postId);
+    emit("handleDeletePost", obj.postId);
   }
 }
 </script>
@@ -36,16 +34,12 @@ const onToast = (obj: ToastPayload) => {
 
   <div>
     <div class="flex flex-col gap-4">
-      <div
+      <PostItemDetailed
           v-for="post in posts"
           :key="post.id"
-      >
-        <PostItemDetailed
-            v-if="!deletedPosts.includes(post.id)"
-            :post="post"
-            @onToast="onToast"
-        />
-      </div>
+          :post="post"
+          @onDeletePost="onDeletePost"
+      />
     </div>
     <Paginator
         :rows="perPage"
