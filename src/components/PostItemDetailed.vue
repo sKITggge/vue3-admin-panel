@@ -1,27 +1,38 @@
 <script setup lang="ts">
 import Card from "primevue/card";
 import Button from 'primevue/button';
-import Toast from 'primevue/toast';
-import {useToast} from "primevue";
-import type {DetailedPost} from "../lib/types.ts";
+import type {DetailedPost, ToastPayload} from "../lib/types.ts";
 import {deletePost} from "../lib/api.ts";
 import {ref} from "vue";
+import {TOAST_MESSAGES} from "../lib/constants.ts";
 
 const {post} = defineProps<{ post: DetailedPost }>()
+const emit = defineEmits<{ onToast: [obj: ToastPayload] }>()
 
 const isDeleting = ref<boolean>(false);
-const toast = useToast();
 
 const onDelete = async () => {
   try {
     isDeleting.value = true;
     await deletePost(post.id)
-    toast.add({severity: 'info', summary: 'Info', detail: 'Post Deleted', life: 1500});
+    emit("onToast", {
+      success: true,
+      postId: post.id,
+      message: TOAST_MESSAGES.DELETE_SUCCESS
+    });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      toast.add({severity: 'error', summary: 'Error', detail: error.message, life: 1500});
+      emit("onToast", {
+        success: false,
+        postId: post.id,
+        message: TOAST_MESSAGES.DELETE_ERROR(error.message)
+      });
     } else {
-      toast.add({severity: 'error', summary: 'Error', detail: 'Unknown error', life: 1500});
+      emit("onToast", {
+        success: false,
+        postId: post.id,
+        message: TOAST_MESSAGES.DELETE_ERROR("Unknown error")
+      });
     }
   } finally {
     isDeleting.value = false;
@@ -30,8 +41,6 @@ const onDelete = async () => {
 </script>
 
 <template>
-  <Toast/>
-
   <Card>
     <template #title>
       <router-link :to="{ name: 'post', params: { id: post.id } }">
