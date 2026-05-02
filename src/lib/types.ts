@@ -1,3 +1,5 @@
+import type {ToastMessageOptions} from "primevue/toast";
+
 export interface User {
     id:       number;
     name:     string;
@@ -38,4 +40,19 @@ export interface Post {
     id:     number;
     title:  string;
     body:   string;
+}
+
+export interface DetailedPost extends Post {
+    user:   User;
+}
+
+export interface PaginatedPosts {
+    data: DetailedPost[];
+    total: number
+}
+
+export interface ToastPayload {
+    success: boolean;
+    postId: number;
+    message: ToastMessageOptions
 }

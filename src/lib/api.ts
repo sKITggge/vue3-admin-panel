@@ -1,6 +1,6 @@
-import type {PaginatedUsers, Post, User} from "./types.ts";
+import type {PaginatedPosts, PaginatedUsers, Post, User} from "./types.ts";
 
-export const LIMIT = 4;
+export const LIMIT = 6;
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 export async function getUsers(page: number = 1, search: string = ""): Promise<PaginatedUsers> {
@@ -41,4 +41,34 @@ export async function getUserPosts(id: number): Promise<Post[]> {
     }
 
     return await res.json();
+}
+
+export async function getPosts(page: number = 1, search: string = ""): Promise<PaginatedPosts> {
+    const params = new URLSearchParams({
+        _expand: "user",
+        _page: String(page),
+        _limit: String(LIMIT),
+        q: search,
+    });
+
+    const res = await fetch(`${BASE_URL}/posts?${params.toString()}`);
+
+    if (!res.ok) {
+        throw new Error("Unable to get posts");
+    }
+
+    const data = await res.json();
+    const totalCount = res.headers.get('X-Total-Count');
+    const total = totalCount ? parseInt(totalCount, 10) : 0;
+
+    return { data, total };
+}
+
+export async function deletePost(id: number): Promise<void> {
+    const res = await fetch(`${BASE_URL}/posts/${id}`, {
+        method: "DELETE",
+    });
+    if (!res.ok) {
+        throw new Error('Delete failed');
+    }
 }

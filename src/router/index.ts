@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory, type RouteRecordInfo} from 'vue-router'
 import UsersView from '../views/UsersView.vue'
 import UserView from '../views/UserView.vue'
+import PostsView from "../views/PostsView.vue";
 
 export interface RouteNamedMap {
     users: RouteRecordInfo<
@@ -24,6 +25,13 @@ export interface RouteNamedMap {
         Record<never, never>,
         never
     >
+    post: RouteRecordInfo<
+        'post',
+        '/posts/:id',
+        { id: string | number },
+        { id: string },
+        never
+    >
 }
 
 declare module 'vue-router' {
@@ -37,7 +45,8 @@ const router = createRouter({
     routes: [
         { path: '/', name: 'users', component: UsersView },
         { path: '/users/:id', name: 'user', component: UserView},
-        { path: '/posts', name: 'posts', component: UsersView},
+        { path: '/posts', name: 'posts', component: PostsView},
+        { path: '/posts/:id', name: 'post', component: PostsView},
     ],
 })
 export default router
