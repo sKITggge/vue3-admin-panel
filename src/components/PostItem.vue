@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Card from "primevue/card";
-import type {Post} from "../lib/types.ts";
+  import Card from 'primevue/card';
+  import type { Post } from '../lib/types.ts';
 
-defineProps<{ post: Post}>()
+  defineProps<{ post: Post }>();
 </script>
 
 <template>

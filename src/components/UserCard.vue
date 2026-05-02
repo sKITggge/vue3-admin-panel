@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import type { User } from "../lib/types.ts";
-import Card from 'primevue/card';
-import Avatar from 'primevue/avatar';
-import Badge from 'primevue/badge';
-import Divider from 'primevue/divider';
+  import type { User } from '../lib/types.ts';
+  import Card from 'primevue/card';
+  import Avatar from 'primevue/avatar';
+  import Badge from 'primevue/badge';
+  import Divider from 'primevue/divider';
 
-const { user } = defineProps<{ user: User }>();
+  const { user } = defineProps<{ user: User }>();
 </script>
 
 <template>
   <router-link :to="{ name: 'user', params: { id: user.id } }">
     <Card class="overflow-hidden rounded-xl group">
       <template #header>
-        <div class="h-2 bg-gradient-to-r from-blue-600 to-purple-600 transition-opacity duration-200 group-hover:opacity-70"></div>
+        <div
+          class="h-2 bg-gradient-to-r from-blue-600 to-purple-600 transition-opacity duration-200 group-hover:opacity-70"
+        ></div>
       </template>
 
       <template #title>
         <div class="flex items-center gap-3">
           <Avatar
-              :label="user.name?.[0]?.toUpperCase() ?? ''"
-              shape="circle"
-              size="large"
-              class="w-12 h-12 bg-blue-500 text-white font-bold shadow-sm"
+            :label="user.name?.[0]?.toUpperCase() ?? ''"
+            shape="circle"
+            size="large"
+            class="w-12 h-12 bg-blue-500 text-white font-bold shadow-sm"
           />
           <span class="text-xl font-semibold text-gray-800">{{ user.name }}</span>
         </div>
@@ -29,8 +31,8 @@ const { user } = defineProps<{ user: User }>();
 
       <template #subtitle>
         <Badge
-            severity="secondary"
-            class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium"
+          severity="secondary"
+          class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium"
         >
           @{{ user.username }}
         </Badge>
