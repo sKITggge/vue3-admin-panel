@@ -1,4 +1,4 @@
-import type { PaginatedPosts, PaginatedUsers, Post, User } from './types.ts';
+import type { DetailedPost, PaginatedPosts, PaginatedUsers, Post, User } from './types.ts';
 
 export const LIMIT = 6;
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
@@ -62,6 +62,20 @@ export async function getPosts(page: number = 1, search: string = ''): Promise<P
   const total = totalCount ? parseInt(totalCount, 10) : 0;
 
   return { data, total };
+}
+
+export async function getPost(id: number): Promise<DetailedPost> {
+  const params = new URLSearchParams({
+    _expand: 'user',
+  });
+
+  const res = await fetch(`${BASE_URL}/posts/${id}?${params.toString()}`);
+
+  if (!res.ok) {
+    throw new Error('Unable to get post');
+  }
+
+  return await res.json();
 }
 
 export async function deletePost(id: number): Promise<void> {

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordInfo } from 'vue-router
 import UsersView from '../views/UsersView.vue';
 import UserView from '../views/UserView.vue';
 import PostsView from '../views/PostsView.vue';
+import PostView from '../views/PostView.vue';
 
 export interface RouteNamedMap {
   users: RouteRecordInfo<'users', '/', Record<never, never>, Record<never, never>, never>;
@@ -22,7 +23,7 @@ const router = createRouter({
     { path: '/', name: 'users', component: UsersView },
     { path: '/users/:id', name: 'user', component: UserView },
     { path: '/posts', name: 'posts', component: PostsView },
-    { path: '/posts/:id', name: 'post', component: PostsView },
+    { path: '/posts/:id', name: 'post', component: PostView },
   ],
 });
 export default router;
