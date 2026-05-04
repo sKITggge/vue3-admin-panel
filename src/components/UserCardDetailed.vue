@@ -1,37 +1,35 @@
 <script setup lang="ts">
-import type {User} from "../lib/types.ts";
-import Card from 'primevue/card';
-import Avatar from 'primevue/avatar';
-import Badge from 'primevue/badge';
-import Divider from 'primevue/divider';
-import {computed} from "vue";
+  import type { User } from '../lib/types.ts';
+  import Card from 'primevue/card';
+  import Avatar from 'primevue/avatar';
+  import Badge from 'primevue/badge';
+  import Divider from 'primevue/divider';
+  import { computed } from 'vue';
 
-const {user} = defineProps<{ user: User }>();
+  const { user } = defineProps<{ user: User }>();
 
-const formattedLocation = computed(() => {
-  return [
-    user.address.street,
-    user.address.suite,
-    user.address.city,
-    user.address.zipcode
-  ].filter(Boolean).join(", ");
-})
+  const formattedLocation = computed(() => {
+    return [user.address.street, user.address.suite, user.address.city, user.address.zipcode]
+      .filter(Boolean)
+      .join(', ');
+  });
 </script>
 
 <template>
   <Card class="overflow-hidden rounded-xl group">
     <template #header>
       <div
-          class="h-2 bg-gradient-to-r from-blue-600 to-purple-600 transition-opacity duration-200 group-hover:opacity-70"></div>
+        class="h-2 bg-gradient-to-r from-blue-600 to-purple-600 transition-opacity duration-200 group-hover:opacity-70"
+      ></div>
     </template>
 
     <template #title>
       <div class="flex items-center gap-3">
         <Avatar
-            :label="user.name?.[0]?.toUpperCase() ?? ''"
-            shape="circle"
-            size="large"
-            class="w-12 h-12 bg-blue-500 text-white font-bold shadow-sm"
+          :label="user.name?.[0]?.toUpperCase() ?? ''"
+          shape="circle"
+          size="large"
+          class="w-12 h-12 bg-blue-500 text-white font-bold shadow-sm"
         />
         <span class="text-xl font-semibold text-gray-800">{{ user.name }}</span>
       </div>
@@ -39,15 +37,15 @@ const formattedLocation = computed(() => {
 
     <template #subtitle>
       <Badge
-          severity="secondary"
-          class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium"
+        severity="secondary"
+        class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium"
       >
         @{{ user.username }}
       </Badge>
     </template>
 
     <template #content>
-      <Divider class="my-3"/>
+      <Divider class="my-3" />
       <ul class="grid grid-cols-2 space-y-0 divide-y divide-gray-100">
         <li class="flex items-center gap-3 py-2 text-gray-600">
           <i class="pi pi-envelope w-5 text-blue-500"></i>
