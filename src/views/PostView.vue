@@ -37,7 +37,10 @@
 
 <template>
   <div class="flex flex-col gap-4">
-    <Button class="w-fit" as="router-link" :to="{ name: 'posts' }" label="Back to posts" />
+    <div class="flex gap-4">
+      <Button class="w-fit" as="router-link" :to="{ name: 'posts' }" label="Back to posts" />
+      <Button class="w-fit" as="router-link" :to="{ name: 'user', params: { id: post?.userId } }" label="To author page" />
+    </div>
 
     <Message v-if="loading" severity="info">Loading user info...</Message>
     <Message v-else-if="!!errorMessage || !post" severity="error">
