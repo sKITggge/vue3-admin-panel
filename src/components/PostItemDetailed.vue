@@ -6,7 +6,7 @@
   import { ref } from 'vue';
   import { TOAST_MESSAGES } from '../lib/constants.ts';
 
-  const { post } = defineProps<{ post: DetailedPost }>();
+  const { post, showControls = true } = defineProps<{ post: DetailedPost, showControls: boolean }>();
   const emit = defineEmits<{ onDeletePost: [obj: ToastPayload] }>();
 
   const isDeleting = ref<boolean>(false);
@@ -55,7 +55,7 @@
         {{ post.body }}
       </p>
     </template>
-    <template #footer>
+    <template v-if="showControls" #footer>
       <Button
         label="Delete"
         severity="secondary"
