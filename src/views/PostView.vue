@@ -13,7 +13,7 @@
   const errorMessage = ref<string | null>(null);
 
   onMounted(async () => {
-    const params = route.params as RouteParams<'user'>;
+    const params = route.params as RouteParams<'post'>;
     const postId = +params.id;
     if (isNaN(postId)) {
       errorMessage.value = 'Invalid post ID';
@@ -39,10 +39,10 @@
   <div class="flex flex-col gap-4">
     <div class="flex gap-4">
       <Button class="w-fit" as="router-link" :to="{ name: 'posts' }" label="Back to posts" />
-      <Button class="w-fit" as="router-link" :to="{ name: 'user', params: { id: post?.userId } }" label="To author page" />
+      <Button v-if="post?.userId" class="w-fit" as="router-link" :to="{ name: 'user', params: { id: post.userId } }" label="To author page" />
     </div>
 
-    <Message v-if="loading" severity="info">Loading user info...</Message>
+    <Message v-if="loading" severity="info">Loading post...</Message>
     <Message v-else-if="!!errorMessage || !post" severity="error">
       {{ errorMessage ?? 'Please try again later' }}
     </Message>
