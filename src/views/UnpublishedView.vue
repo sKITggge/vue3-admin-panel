@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { usePostStore } from '../stores/PostStore.ts';
   import PostItemDetailed from '../components/PostItemDetailed.vue';
-  import type { Post, ToastPayload } from '../lib/types.ts';
+  import type { PostCreate, ToastPayload } from '../lib/types.ts';
   import PostForm from '../components/PostForm.vue';
 
   const { posts, addPost, removePost } = usePostStore();
@@ -12,7 +12,7 @@
     }
   };
 
-  const onAddPost = (newPost: Partial<Post>) => {
+  const onAddPost = (newPost: PostCreate) => {
     addPost(newPost);
   };
 </script>

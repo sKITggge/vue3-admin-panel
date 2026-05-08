@@ -4,23 +4,20 @@
   import Textarea from 'primevue/textarea';
   import Button from 'primevue/button';
   import Panel from 'primevue/panel';
-  import type { Post } from '../lib/types.ts';
+  import type { PostCreate } from '../lib/types.ts';
 
-  const emit = defineEmits<{ onAddPost: [post: Partial<Post>] }>();
+  const emit = defineEmits<{ onAddPost: [post: PostCreate] }>();
 
   const formData = ref({
     title: '',
     body: '',
   });
-  const isSubmitting = ref(false);
 
   const handleSubmit = () => {
     const title = formData.value.title;
     const body = formData.value.body;
 
     if (!title || !body) return;
-
-    isSubmitting.value = true;
 
     emit('onAddPost', {
       title,
@@ -30,7 +27,6 @@
 
     formData.value.title = '';
     formData.value.body = '';
-    isSubmitting.value = false;
   };
 </script>
 
@@ -48,13 +44,7 @@
         <label for="body" class="block font-medium mb-1">Content</label>
         <Textarea id="body" v-model.trim="formData.body" rows="4" required class="w-full" />
       </div>
-      <Button
-        type="submit"
-        label="Add Post"
-        :disabled="isSubmitting"
-        severity="primary"
-        class="w-full"
-      />
+      <Button type="submit" label="Add Post" severity="primary" class="w-full" />
     </form>
   </Panel>
 </template>

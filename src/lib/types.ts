@@ -42,6 +42,8 @@ export interface Post {
   body: string;
 }
 
+export type PostCreate = Omit<Post, 'id'>;
+
 export interface DetailedPost extends Post {
   user: User;
 }
