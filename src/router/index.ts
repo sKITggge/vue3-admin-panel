@@ -3,6 +3,7 @@ import UsersView from '../views/UsersView.vue';
 import UserView from '../views/UserView.vue';
 import PostsView from '../views/PostsView.vue';
 import PostView from '../views/PostView.vue';
+import UnpublishedView from "../views/UnpublishedView.vue";
 
 export interface RouteNamedMap {
   users: RouteRecordInfo<'users', '/', Record<never, never>, Record<never, never>, never>;
@@ -24,6 +25,7 @@ const router = createRouter({
     { path: '/users/:id', name: 'user', component: UserView },
     { path: '/posts', name: 'posts', component: PostsView },
     { path: '/posts/:id', name: 'post', component: PostView },
+    { path: '/unpublished', name: 'unpublished', component: UnpublishedView },
   ],
 });
 export default router;

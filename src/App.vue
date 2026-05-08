@@ -5,6 +5,7 @@
   const links: MenuItem[] = [
     { label: 'Users', route: 'users' },
     { label: 'Posts', route: 'posts' },
+    { label: 'Unpublished Posts', route: 'unpublished' },
   ];
 </script>
 
