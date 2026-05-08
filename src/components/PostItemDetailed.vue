@@ -1,12 +1,15 @@
 <script setup lang="ts">
   import Card from 'primevue/card';
   import Button from 'primevue/button';
-  import type { DetailedPost, ToastPayload } from '../lib/types.ts';
+  import type { DetailedPost, Post, ToastPayload } from '../lib/types.ts';
   import { deletePost } from '../lib/api.ts';
   import { ref } from 'vue';
   import { TOAST_MESSAGES } from '../lib/constants.ts';
 
-  const { post, showControls = true } = defineProps<{ post: DetailedPost, showControls: boolean }>();
+  const { post, showControls = true } = defineProps<{
+    post: DetailedPost | Post;
+    showControls: boolean;
+  }>();
   const emit = defineEmits<{ onDeletePost: [obj: ToastPayload] }>();
 
   const isDeleting = ref<boolean>(false);
@@ -47,7 +50,7 @@
         {{ post.title }}
       </router-link>
     </template>
-    <template #subtitle>
+    <template v-if="'user' in post" #subtitle>
       {{ post.user.name }}
     </template>
     <template #content>
